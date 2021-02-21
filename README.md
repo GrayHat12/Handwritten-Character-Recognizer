@@ -2,8 +2,8 @@
 
 ## Phase 1 (Python)
 
-- <span style="color:green">Starting simple by training a deep neural network for recognising handwritten english alphabets.</span>
-- <span style="color:#FF9421">Testing the neural network and optimising it to work with different sized inputs.</span>
+- [:heavy_check_mark:] Starting simple by training a deep neural network for recognising handwritten english alphabets.
+- [:zap:] Testing the neural network and optimising it to work with different sized inputs.
 
 ## Phase 2 (Javascript)
 
