@@ -3,7 +3,7 @@
 ---
 **:warning: NOTE**
 
-You'll need the `samples` folder in the project directory to run this code. Download the file from [this](https://drive.google.com/drive/folders/1TK3yzgJvrcNq2otPVoul0si__fo6_G7U?usp=sharing) link
+You'll need the `samples` folder in the project directory to run this code. Download the folder from [this](https://drive.google.com/drive/folders/1TK3yzgJvrcNq2otPVoul0si__fo6_G7U?usp=sharing) link
 
 ---
 
