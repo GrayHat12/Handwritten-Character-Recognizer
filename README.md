@@ -10,7 +10,7 @@ You'll need the `samples` folder in the project directory to run this code. Down
 ## Phase 1 (Python)
 
 - <span style="color:green">[:heavy_check_mark:] Starting simple by training a deep neural network for recognising handwritten english alphabets.</span>
-- <span style="color:#FF9C33">[:zap:] Testing the neural network and optimising it to work with different sized inputs.</span>
+- <span style="color:#FF9C33">[:zzz:] Testing the neural network and optimising it to work with different sized inputs.</span>
     - ><span style="font-size:0.8em"> :eyes: 'optimising for different sized inputs' could be a step after we've established how our UI is gonna handle drawing. So I'm skipping this 'optimise' step for now.<span>
 
 ## Phase 2 (Javascript)
