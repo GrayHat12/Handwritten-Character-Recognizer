@@ -15,7 +15,7 @@ You'll need the `samples` folder in the project directory to run this code. Down
 
 ## Phase 2 (Javascript)
 
-- <span style="color:green">[:heavy_check_mark:] Exporting the neural network trained in Phase 1 to tensorflowjs compatible format.</span>
+- <span title="inside phase-01-step-02.ipynb file" style="color:green">[:heavy_check_mark:] Exporting the neural network trained in Phase 1 to tensorflowjs compatible format.</span>
 - <span style="color:#FF9C33">[:zap:] Scripting the prediction part again using the exported model.</span>
 - Testing and optimising it similar to what we did in Phase 1 (this time in JS)
 
