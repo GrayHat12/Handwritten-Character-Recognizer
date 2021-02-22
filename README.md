@@ -15,8 +15,8 @@ You'll need the `samples` folder in the project directory to run this code. Down
 
 ## Phase 2 (Javascript)
 
-- <span style="color:#FF9C33">[:zap:] Exporting the neural network trained in Phase 1 to tensorflowjs compatible format.</span>
-- Scripting the prediction part again using the exported model.
+- <span style="color:green">[:heavy_check_mark:] Exporting the neural network trained in Phase 1 to tensorflowjs compatible format.</span>
+- <span style="color:#FF9C33">[:zap:] Scripting the prediction part again using the exported model.</span>
 - Testing and optimising it similar to what we did in Phase 1 (this time in JS)
 
 ## Phase 3 (Python/Javascript)

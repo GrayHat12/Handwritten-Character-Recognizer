@@ -83,6 +83,17 @@ class Trainer:
         self._model.fit(self._normalized_x_train,self._y_train,epochs=epochs,verbose=self._verbose)
         self._trained = True
     
+    def save_model(self,path='/model/model.h5'):
+        self._model.save(path)
+    
+    def model_summary(self):
+        self._model.summary()
+    
+    def load_model(self,path='/model/model.h5',summary=True):
+        self._model = tf.keras.models.load_model(path)
+        if summary:
+            self.model_summary()
+    
     def get_test_images(self):
         return self._x_test
     def get_test_labels(self):
