@@ -1,6 +1,6 @@
 const predictor = new Predictor();
 window.predictor = predictor;
-async function loadModel(path = './tfjs_model/model.json') {
+async function loadModel(path = './static/tfjs_model/model.json') {
     let model = await tf.loadLayersModel(path);
     init();
     return model;
