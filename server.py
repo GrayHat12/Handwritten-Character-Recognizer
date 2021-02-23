@@ -1,8 +1,8 @@
 from flask import Flask,render_template
-from gray_lib.trainer import Trainer
+import gray_lib.trainer as glib
 
 app = Flask(__name__)
-
+#t = glib.Trainer()
 
 @app.route('/')
 def index():
