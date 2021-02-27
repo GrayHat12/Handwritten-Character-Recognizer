@@ -1,15 +1,3 @@
-const predictor = new Predictor();
-window.predictor = predictor;
-async function loadModel(path = './static/tfjs_model/model.json') {
-    let model = await tf.loadLayersModel(path);
-    init();
-    return model;
-};
-console.log("loading model");
-loadModel().then(model => {
-    predictor.setModel(model);
-}).catch(console.error);
-
 let canvas, ctx, flag = false,
     prevX = 0,
     currX = 0,
@@ -57,23 +45,26 @@ function draw() {
 function save() {
     let _partitions = 28;
     let image = [];
-    for(let col=0;col<_partitions;col++){
-        let rdata = [];
-        for(let row=0;row<_partitions;row++){
+    for(let row=_partitions-1;row>=0;row--){
+        for(let col=0;col<_partitions;col++){
             let i_s = (row+1)*y;
             let j_s = (col+1)*y;
             let color = ctx.getImageData(i_s,j_s,_partitions,_partitions).data;
-            color = color.reduce((total,current) => total+current) / color.length;
-            color = Math.floor(color);
-            rdata.push(color);
+            color = Math.max.apply(Math,color);
+            if (color === 0) {
+                color = 0;
+            }else {
+                color = 255;
+            }
+            image.push(color);
         }
-        image.push(rdata);
     }
     window.image = image;
-    predictor.predict(image);
+    predict(image);
 }
 function erase() {
-    var m = confirm("Want to clear");
+    //var m = confirm("Want to clear");
+    let m = true;
     if (m) {
         ctx.clearRect(0, 0, w, h);
         document.getElementById("canvasimg").style.display = "none";
@@ -110,3 +101,35 @@ function findxy(res, e) {
         }
     }
 }
+
+
+function predict(image) {
+    fetch('/api/predict',{
+        method: "POST",
+        body: JSON.stringify({
+            lang: 'en',
+            tensor: image,
+        }),
+        headers: {
+            "Content-Type": "application/json"
+        }
+    }).then(response => {
+        if (!response.ok) {
+            alert('err');
+            console.error(response);
+        }
+        response.json().then(data => {
+            console.log('data',data);
+            let char = data['prediction']['char'];
+            let label = data['prediction']['label'];
+            alert(`Prediction : ${label}`);
+        }).catch(err => {
+            alert('err');
+            console.error(err);
+        });
+    }).catch(err => {
+        console.error(err);
+    });
+};
+
+init();

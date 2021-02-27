@@ -33,6 +33,15 @@ def showRandomImageFrom(images, labels, index=None):
     return label, character, index
 
 
+def zeroesAnd255s(image):
+    n_image = []
+    for im in image:
+        if im == 0:
+            n_image.append(0)
+        else:
+            n_image.append(255)
+    return n_image
+
 """
 Used to train for any language
 """
@@ -155,10 +164,14 @@ class Trainer:
             self._normalized_x_test, self._y_test, verbose=0)
         return val_loss, val_acc
 
-    def predict_one(self, inp, only_best=True, get_char=True, normalize=True):
+    def predict_one(self, inp, only_best=True, get_char=True, normalize=True,list_type=True):
+        if list_type:
+            inp = np.array(inp).reshape(self._shape, self._shape)
         if normalize:
             inp = tf.keras.utils.normalize(np.array([inp]), axis=1)
-        pred = self._model.predict([inp])
+        print('inp',inp.shape)
+        #showImage(inp[0])
+        pred = self._model.predict(inp)
         if only_best:
             pred = [np.argmax(p) for p in pred]
         if get_char:
