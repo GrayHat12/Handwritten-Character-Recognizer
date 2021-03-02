@@ -19,6 +19,7 @@ You'll need the `samples` folder in the project directory to run this code. Down
 - <span style="color:green">[:heavy_check_mark:] Scripting the prediction part again using the exported model.</span>
 - <span style="color:#FF9C33">[:zap:] Testing and optimising it similar to what we did in Phase 1 (this time in JS)</span>
     - ><span style="font-size:0.8em"> :eyes: Initial testing shows that if a small character is drawn, it becomes smudged on it's way to the neural network, affecting prediction. Will have to figure out a way to reduce smudging and span the character equally. It should be <span title="Ryan George Reference">`super easy, barely an inconvenience`<span> but I feel too lazy right now.<span>
+    - ><span style="font-size:0.8em"> :scream: It was not <strong>`super easy`</strong> but <strong>`very inconvenient`</strong>. Please somebody help me, I'm crying.<span>
 
 ## Phase 3 (Python/Javascript)
 

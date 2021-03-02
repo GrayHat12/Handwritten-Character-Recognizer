@@ -4,17 +4,21 @@ import random
 import matplotlib.pyplot as plt
 import sys
 import tensorflowjs as tfjs
+import time
 
 
-def showImage(image):
+def showImage(image,save=False):
     plt.imshow(image, cmap=plt.cm.binary)
-    plt.show()
+    if save:
+        plt.savefig('./timestamps/{time}.png'.format(time=str(time.time())))
+    else:
+        plt.show()
 
 
 def getCharAndLabel(image, label):
     alphabets = 'a b c d e f g h i j k l m n o p q r s t u v w x y z'.split(
         ' ')
-    image = np.transpose(image)
+    #image = np.transpose(image)
     return image, label, alphabets[label]
 
 
@@ -69,11 +73,9 @@ class Trainer:
                  verbose=2,
                  add_to_label=-1
                  ):
-        self._x_train = np.array([np.array(image).reshape(
-            shape, shape) for image in x_train])  # np.array(x_train).reshape(shape,shape)
+        self._x_train = np.array([np.transpose(np.array(image).reshape(shape,shape)) for image in x_train])
         self._y_train = np.array(y_train) + add_to_label
-        self._x_test = np.array(
-            [np.array(image).reshape(shape, shape) for image in x_test])
+        self._x_test = np.array([np.transpose(np.array(image).reshape(shape,shape)) for image in x_test])
         self._y_test = np.array(y_test) + add_to_label
         self._labelToMeaningfulOutput = labelToMeaningfulOutput
         self._model = None
@@ -152,7 +154,7 @@ class Trainer:
         if len(x_test)==0 or len(y_test)==0:
             return self._evaluate()
         if normalize:
-            x_test = np.array([np.array(image).reshape(self._shape, self._shape) for image in x_test])
+            x_test = np.array([np.transpose(np.array(image).reshape(self._shape, self._shape)) for image in x_test])
             x_test = tf.keras.utils.normalize(x_test, axis=1)
             y_test = np.array(y_test) + add_to_label
         val_loss, val_acc = self._model.evaluate(
@@ -164,13 +166,14 @@ class Trainer:
             self._normalized_x_test, self._y_test, verbose=0)
         return val_loss, val_acc
 
-    def predict_one(self, inp, only_best=True, get_char=True, normalize=True,list_type=True):
+    def predict_one(self, inp, only_best=True, get_char=True, normalize=True,list_type=True,show_image=False):
         if list_type:
-            inp = np.array(inp).reshape(self._shape, self._shape)
+            inp = np.array([np.array(inp).reshape(self._shape, self._shape)])
         if normalize:
-            inp = tf.keras.utils.normalize(np.array([inp]), axis=1)
+            inp = tf.keras.utils.normalize(inp, axis=1)
         print('inp',inp.shape)
-        #showImage(inp[0])
+        if show_image:
+            showImage(inp[0],save=True)
         pred = self._model.predict(inp)
         if only_best:
             pred = [np.argmax(p) for p in pred]

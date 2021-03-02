@@ -8,7 +8,7 @@ app = Flask(__name__)
 
 
 def predict_english(image):
-    label,char = en_trainer.predict_one(image)
+    label,char = en_trainer.predict_one(image,show_image=True,normalize=True)
     return label,int(char)
 
 @app.route('/',methods=['GET'])
