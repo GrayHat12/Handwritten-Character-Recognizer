@@ -8,6 +8,7 @@ let canvas, ctx, flag = false,
 let x = "black",
     y = 35;
 
+let shape = 32;
 
 const pred = document.getElementById("pred");
 
@@ -87,9 +88,9 @@ function deleteRowAndCol(matr, indexes) {
     return nmat;
 }
 
-function Make28x28(matr) {
-    let r_div = Math.floor((matr.length - 1) / 28);
-    let c_div = Math.floor((matr.length - 1) / 28);
+function Make28x28(matr,shape) {
+    let r_div = Math.floor((matr.length - 1) / shape);
+    let c_div = Math.floor((matr.length - 1) / shape);
     console.log('divs', r_div, c_div);
     let nmat = [];
     for (let i = 0; i < matr.length; i += r_div) {
@@ -132,8 +133,8 @@ function save() {
     }
     matrix = deleteRowAndCol(matrix, delsides);
     console.log(matrix);
-    matrix = Make28x28(matrix);
-    let more = matrix.length % 28;
+    matrix = Make28x28(matrix,shape);
+    let more = matrix.length % shape;
     console.log('prev', matrix, more);
     if (more > 0) {
         let dels = [];
@@ -191,7 +192,7 @@ function predict(image) {
     fetch('/api/predict', {
         method: "POST",
         body: JSON.stringify({
-            lang: 'en',
+            lang: 'hi',
             tensor: image,
         }),
         headers: {
