@@ -8,11 +8,12 @@ import time
 
 
 def showImage(image,save=False):
-    plt.imshow(image, cmap=plt.cm.binary)
-    if save:
-        plt.savefig('./timestamps/{time}.png'.format(time=str(time.time())))
-    else:
-        plt.show()
+    plt.imshow(image, cmap='gray')
+    #if save:
+    plt.savefig('./timestamps/{time}.png'.format(time=str(time.time())))
+    plt.close()
+    #else:
+    #    plt.show()
 
 
 def getCharAndLabel(image, label):
@@ -177,6 +178,12 @@ class Trainer:
         pred = self._model.predict(inp)
         if only_best:
             pred = [np.argmax(p) for p in pred]
+        else:
+            top_k_values, top_k_indices = tf.nn.top_k(pred, k=5)
+            top_k_values = top_k_values.numpy().tolist()
+            top_k_indices = top_k_indices.numpy().tolist()
+            print(top_k_indices,top_k_values)
+            return [float(v) for v in top_k_values[0]], [self.get_char_from_pred(i) for i in top_k_indices[0]]
         if get_char:
             return self.get_char_from_pred(pred[0]), pred[0]
         return None, pred[0]

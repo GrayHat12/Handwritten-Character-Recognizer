@@ -1,27 +1,100 @@
-let canvas, ctx, flag = false,
+var canvas, ctx, flag = false,
     prevX = 0,
     currX = 0,
     prevY = 0,
     currY = 0,
     dot_flag = false;
 
-let x = "black",
-    y = 35;
+let pred;
 
-let shape = 32;
+var x = "white", y = 30;
+let canvasEnabled = false;
 
-const pred = document.getElementById("pred");
+let CHAR_TO_PREDICT;
 
+const video = document.getElementsByTagName("video")[0];
 
+let timestamps = [
+    {
+        t: 22.419432,
+        char: "क"
+    },
+    {
+        t: 31.619554,
+        char: "ख"
+    },
+    {
+        t: 36.906189999999995,
+        char: "ग"
+    },
+    {
+        t: 43.728748,
+        char: "घ"
+    },
+    {
+        t: 51.316231,
+        char: "ङ"
+    },
+    {
+        t: 58.290466,
+        char: "च"
+    },
+    {
+        t: 66.821336,
+        char: "छ"
+    },
+    {
+        t: 73.242266,
+        char: "ज"
+    },
+    {
+        t: 82.853553,
+        char: "झ"
+    },
+    {
+        t: 89.770818,
+        char: "ञ"
+    },
+    {
+        t: 95.205406,
+        char: "ट"
+    }
+];
+
+let donesies = [];
+
+function setChar(data) {
+    let char = data.char;
+    let but = document.getElementById("char");
+    but.style.display = "block";
+    but.getElementsByClassName("a")[0].innerHTML = char;
+    donesies.push(data);
+    canvasEnabled = true;
+    CHAR_TO_PREDICT = char;
+}
+
+video.addEventListener("timeupdate", (ev) => {
+    let ctime = video.currentTime;
+    if (Math.abs(timestamps[0].t - ctime) < 0.1) {
+        video.pause();
+        setChar(timestamps.shift());
+    }
+});
+
+function setBackground() {
+    ctx.fillStyle = "black";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+}
 
 function init() {
-    console.log("Canvas Initialising");
     canvas = document.getElementById('can');
+    pred = document.getElementById("pred");
     ctx = canvas.getContext("2d");
     w = canvas.width;
     h = canvas.height;
-
+    setBackground();
     canvas.addEventListener("mousemove", function (e) {
+        //console.log(e);
         findxy('move', e)
     }, false);
     canvas.addEventListener("mousedown", function (e) {
@@ -33,130 +106,66 @@ function init() {
     canvas.addEventListener("mouseout", function (e) {
         findxy('out', e)
     }, false);
-    console.log("Canvas Initialized");
 }
 
 function draw() {
+    if (!canvasEnabled) return;
     ctx.beginPath();
-    ctx.moveTo(prevX, prevY);
-    ctx.lineTo(currX, currY);
+    ctx.moveTo(prevX + window.scrollX, prevY + window.scrollY);
+    ctx.lineTo(currX + window.scrollX, currY + window.scrollY);
     ctx.strokeStyle = x;
     ctx.lineWidth = y;
     ctx.stroke();
     ctx.closePath();
 }
 
-function getMatrix() {
-    let matr = [];
-    for (let j = 0; j < canvas.width; j++) {
-        let r = [];
-        for (let i = 0; i < canvas.height; i++) {
-            let color = ctx.getImageData(i, j, 1, 1).data;
-            color = Math.max.apply(Math, color);
-            if (color <= 255 / 2) {
-                color = 0;
-            } else {
-                color = 255;
-            }
-            r.push(color);
-        }
-        matr.push(r);
-    }
-    return matr;
-}
-
-function getRowAndCol(matr, index) {
-    let row = matr[index];
-    let col = [];
-    for (let i = 0; i < row.length; i++) {
-        col.push(matr[i][index]);
-    }
-    return { row, col };
-}
-
-function deleteRowAndCol(matr, indexes) {
-    let nmat = [];
-    for (let i = 0; i < matr.length; i++) {
-        if (indexes.includes(i)) continue;
-        let _r = [];
-        for (let j = 0; j < matr[0].length; j++) {
-            if (indexes.includes(j)) continue;
-            _r.push(matr[i][j]);
-        }
-        nmat.push(_r);
-    }
-    return nmat;
-}
-
-function Make28x28(matr,shape) {
-    let r_div = Math.floor((matr.length - 1) / shape);
-    let c_div = Math.floor((matr.length - 1) / shape);
-    console.log('divs', r_div, c_div);
-    let nmat = [];
-    for (let i = 0; i < matr.length; i += r_div) {
-        let _r = [];
-        for (let j = 0; j < matr.length; j += c_div) {
-            let allcolors = [0];
-            for (let _i = i; _i < i + r_div && _i < matr.length; _i++) {
-                for (let _j = j; _j < j + c_div && _j < matr.length; _j++) {
-                    try {
-                        allcolors.push(matr[_i][_j]);
-                    } catch (e) {
-                        console.log(_i, _j, i, j);
-                        console.error(e);
-                        return;
-                    }
-                }
-            }
-            _r.push(Math.max(...allcolors));
-        }
-        nmat.push(_r);
-    }
-    return nmat;
-}
-
-function save() {
-    let matrix = getMatrix();
-    let delsides = [];
-    let sides = matrix.length;
-    for (let i = 0; i < sides - 5; i+=5) {
-        let rmax = [];
-        let cmax = [];
-        for (let j = i; j <= (i + 5); j++) {
-            let { row, col } = getRowAndCol(matrix, j);
-            rmax.push(...row);
-            cmax.push(...col);
-        }
-        if (Math.max(...rmax) === Math.max(...cmax) && Math.max(...rmax) === 0) {
-            delsides.push(i);
-        }
-    }
-    matrix = deleteRowAndCol(matrix, delsides);
-    console.log(matrix);
-    matrix = Make28x28(matrix,shape);
-    let more = matrix.length % shape;
-    console.log('prev', matrix, more);
-    if (more > 0) {
-        let dels = [];
-        for (let i = 0; i < more; i++) {
-            dels.push(i);
-        }
-        matrix = deleteRowAndCol(matrix, dels);
-    }
-    console.log(matrix);
-    window.image = matrix;
-    predict([].concat(...matrix));
-}
 function erase() {
-    //var m = confirm("Want to clear");
-    let m = true;
+    var m = true;//confirm("Want to clear");
     if (m) {
         ctx.clearRect(0, 0, w, h);
         document.getElementById("canvasimg").style.display = "none";
     }
+    setBackground();
+}
+
+function save() {
+    var dataURL = canvas.toDataURL();
+    fetch('/api/predict', {
+        method: "POST",
+        body: JSON.stringify({
+            image: dataURL,
+            lang: 'hi'
+        }),
+        headers: {
+            "Content-Type": "application/json"
+        }
+    }).then(response => {
+        if (!response.ok) {
+            alert('err');
+            console.error(response);
+        }
+        response.json().then(data => {
+            console.log('data', data);
+            let chars = data['prediction']['char'];
+            //let labels = data['prediction']['label'];
+            if (chars.includes(CHAR_TO_PREDICT)) {
+                alert("Success");
+            }else {
+                alert("Wrong");
+            }
+            //alert(`Prediction : ${label}`);
+            //pred.innerText = `${label}`;
+        }).catch(err => {
+            alert('err');
+            console.error(err);
+        });
+    }).catch(err => {
+        console.error(err);
+    });
 }
 
 function findxy(res, e) {
+    //let rect = canvas.getBoundingClientRect();
     if (res == 'down') {
         prevX = currX;
         prevY = currY;
@@ -186,36 +195,5 @@ function findxy(res, e) {
         }
     }
 }
-
-
-function predict(image) {
-    fetch('/api/predict', {
-        method: "POST",
-        body: JSON.stringify({
-            lang: 'hi',
-            tensor: image,
-        }),
-        headers: {
-            "Content-Type": "application/json"
-        }
-    }).then(response => {
-        if (!response.ok) {
-            alert('err');
-            console.error(response);
-        }
-        response.json().then(data => {
-            console.log('data', data);
-            let char = data['prediction']['char'];
-            let label = data['prediction']['label'];
-            alert(`Prediction : ${label}`);
-            pred.innerText = `${label}`;
-        }).catch(err => {
-            alert('err');
-            console.error(err);
-        });
-    }).catch(err => {
-        console.error(err);
-    });
-};
 
 init();

@@ -1,0 +1,71 @@
+body {
+  font-family: "Poppins", sans-serif;
+}
+header {
+  text-align: center;
+}
+
+.sub {
+  max-width: 42rem;
+  margin: auto;
+}
+.frame {
+  display: flex;
+  background-color: #e5e5e5;
+  height: fit-content;
+  width: fit-content;
+  margin: auto;
+  margin-top: 20px;
+}
+.sec1 {
+  width: 700px;
+  height: 395px;
+  padding: 1rem;
+  padding-right: 0.5rem;
+}
+.sec2 {
+  width: 395px;
+  padding: 1rem;
+  padding-left: 0.5rem;
+}
+.sec2 button {
+  display: flex;
+  margin: auto;
+  margin-top: 20px;
+  padding: 0;
+}
+button > .a {
+  background: black;
+  color: white;
+  padding: 0.4em;
+  height: inherit;
+}
+button > .b {
+  background: white;
+  color: black;
+  height: inherit;
+  padding: 0.4em;
+}
+video {
+  width: inherit;
+  height: inherit;
+}
+canvas {
+  width: inherit;
+  height: inherit;
+  display: block;
+  cursor: crosshair;
+}
+
+@media (max-width: 1100px) {
+  .frame {
+    flex-direction: column;
+    align-items: center;
+  }
+  .sec1 {
+    padding-right: 1rem;
+  }
+  .sec2 {
+    padding-left: 1rem;
+  }
+}

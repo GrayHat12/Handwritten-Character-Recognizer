@@ -8,16 +8,46 @@
     <title>Frontend</title>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.0.0/dist/tf.min.js"></script>
     <script src="./static/phase-02-step-02.js" defer></script>
+    <link rel="stylesheet" href="./static/styles.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
 </head>
 
 <body>
-    <h1>PAGE</h1>
-    <div onload="init()">
-        <canvas id="can" width="420" height="420" style="border:2px solid;"></canvas>
-        <img id="canvasimg" style="position:absolute;top:10%;left:52%;" style="display:none;">
-        <input type="button" value="predict" id="btn" size="30" onclick="save()">
-        <input type="button" value="clear" id="clr" size="23" onclick="erase()">
+    <header>
+        <div>
+            <h1>Interplay Mode</h1>
+        </div>
+        <div>
+            <h2>Making videos interactive with AI</h2>
+        </div>
+    </header>
+    <p class="sub">
+        People watch videos everyday to learn new things. But what if you could do more than just watch? What if
+        there could be interplay between you and the video creator? These prototypes let you interact right
+        alongside the video and practice what you just saw.
+    </p>
+    <div class="frame">
+        <div class="sec1">
+            <video src="./static/vid.mp4" controls></video>
+        </div>
+        <div class="sec2">
+            <canvas width="395" height="395" id="can"></canvas>
+            <img id="canvasimg" style="position:absolute;top:10%;left:52%;" style="display:none;">
+            <div style="display: flex; margin: auto;">
+                <button style="display: none;" id="char" onclick="save()">
+                    <div class="a">क</div>
+                    <div class="b">Submit</div>
+                </button>
+                <button onclick="erase()">
+                    <div class="b">Clear</div>
+                </button>
+            </div>
+        </div>
     </div>
-    <div id="pred" title="Prediction"></div>
+    <div style="height: 50px;"></div>
 </body>
+
 </html>
