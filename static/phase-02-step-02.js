@@ -58,6 +58,108 @@ let timestamps = [
     {
         t: 95.205406,
         char: "ट"
+    },
+    {
+        t: 101.932985,
+        char: "ठ"
+    },
+    {
+        t: 108.938826,
+        char: "ड"
+    },
+    {
+        t: 115.906165,
+        char: "ढ"
+    },
+    {
+        t: 122.880898,
+        char: "ण"
+    },
+    {
+        t: 129.742423,
+        char: "त"
+    },
+    {
+        t: 137.062998,
+        char: "थ"
+    },
+    {
+        t: 143.84825,
+        char: "द"
+    },
+
+    {
+        t: 151.729473,
+        char: "ध"
+    },
+    {
+        t: 158.539406,
+        char: "न"
+    },
+    {
+        t: 163.499902,
+        char: "प"
+    },
+    {
+        t: 171.044124,
+        char: "फ"
+    },
+    {
+        t: 178.935133,
+        char: "ब"
+    },
+    {
+        t: 185.085444,
+        char: "भ"
+    },
+    {
+        t: 190.275019,
+        char: "म"
+    },
+    {
+        t: 195.482917,
+        char: "य"
+
+    },
+    {
+        t: 201.222173,
+        char: "र"
+    },
+    {
+        t: 207.018022,
+        char: "ल"
+    },
+    {
+        t: 212.486308,
+        char: "व"
+    },
+    {
+        t: 218.762569,
+        char: "श"
+    },
+    {
+        t: 225.455197,
+        char: "ष"
+    },
+    {
+        t: 232.899973,
+        char: "स"
+    },
+    {
+        t: 239.471564,
+        char: "ह"
+    },
+    {
+        t: 246.154766,
+        char: "क्ष"
+    },
+    {
+        t: 251.50238,
+        char: "त्र"
+    },
+    {
+        t: 258.020136,
+        char: "ज्ञ"
     }
 ];
 
@@ -75,9 +177,13 @@ function setChar(data) {
 
 video.addEventListener("timeupdate", (ev) => {
     let ctime = video.currentTime;
-    if (Math.abs(timestamps[0].t - ctime) < 0.1) {
+    console.log(timestamps[0]);
+    let diff = timestamps[0].t - ctime;
+    if (Math.abs(diff) < 0.1) {
         video.pause();
         setChar(timestamps.shift());
+    } if (diff < -1) {
+        donesies.push(timestamps.shift());
     }
 });
 
@@ -150,7 +256,10 @@ function save() {
             //let labels = data['prediction']['label'];
             if (chars.includes(CHAR_TO_PREDICT)) {
                 alert("Success");
-            }else {
+                if (video.paused) {
+                    video.play();
+                }
+            } else {
                 alert("Wrong");
             }
             //alert(`Prediction : ${label}`);
