@@ -7,6 +7,8 @@ You'll need the `samples` folder in the project directory to run this code. Down
 
 ---
 
+* Datasets : Emnist for english, [Devanagari Character Set](https://www.kaggle.com/rishianand/devanagari-character-set)
+
 ## Phase 1 (Python)
 
 - <span style="color:green">[:heavy_check_mark:] Starting simple by training a deep neural network for recognising handwritten english alphabets.</span>
